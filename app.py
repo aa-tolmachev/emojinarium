@@ -33,7 +33,7 @@ application = Flask(__name__)  # Change assignment here
 
 #define loger func
 def log(logger, json_params=None,step='new',internal_id=None):
-    if json_params = None:
+    if json_params is None:
         logger.info('internal_id:{0} , step:{1}'.format(internal_id,step))
     else:
         logger.info('internal_id:{0} , step:{1} , message_id{2}'.format(internal_id,step,json_params['message_id']), extra={
