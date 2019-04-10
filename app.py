@@ -6,6 +6,8 @@ import os
 import json
 import traceback
 from xml.etree import ElementTree as ET
+import string
+import random
 
 
 #import self libs
@@ -13,10 +15,35 @@ import test.test_get_message as t_gm
 from models import main as models_main
 
 
+import logging
+import timber
 
+log_apikey = os.getenv('timber_apikey')
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
+timber_handler = timber.TimberHandler(source_id=14767, api_key=log_apikey)
+logger.addHandler(timber_handler)
 
 
 application = Flask(__name__)  # Change assignment here
+
+
+
+
+#define loger func
+def log(logger, json_params=None,step='new',internal_id=None):
+    if json_params = None:
+        logger.info('internal_id:{0} , step:{1}'.format(internal_id,step))
+    else:
+        logger.info('internal_id:{0} , step:{1} , message_id{2}'.format(internal_id,step,json_params['message_id']), extra={
+          'json_params': json_params
+        })
+#create random string
+def randomString(stringLength=10):
+    """Generate a random string of fixed length """
+    letters = string.ascii_lowercase
+    return ''.join(random.choice(letters) for i in range(stringLength))
 
 #test
 @application.route("/")  
@@ -28,6 +55,8 @@ def hello():
 #get message from messanger and calc messages models
 @application.route('/get_message', methods=['GET', 'POST'])  
 def get_message():
+    internal_id = randomString(10)
+
     response = {'status' : 'ok',
                 'code' : 200,
                 'message_id' : None,
@@ -37,9 +66,10 @@ def get_message():
                 'models' :[]
                }
     try:
+        log(logger,step='new',internal_id=internal_id)
         getData = request.get_data()
         json_params = json.loads(getData) 
-        
+        log(logger,json_params,'get json_params',internal_id)
 
         #json_params = {'message_id':0,
         #                'dialog_id':0,
@@ -63,13 +93,14 @@ def get_message():
         
         #make real emoji predict for message
         response['models'] = models_main.main(json_params = json_params , model_to = 'message_id')
-
+        log(logger,json_params,'model done',internal_id)
         
         
     except:
         traceback.print_exc()
         response['status'] = 'error'
         response['code'] = 501
+        log(logger,json_params,'some error',internal_id)
 
 
     response = json.dumps(response)
