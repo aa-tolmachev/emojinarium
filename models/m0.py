@@ -3,7 +3,7 @@ import pandas as pd
 import re
 import numpy as np
 import pickle
-from sklearn import cross_validation, grid_search, linear_model, metrics
+from sklearn import linear_model
 from sklearn.linear_model import SGDClassifier as SGD
 
 
