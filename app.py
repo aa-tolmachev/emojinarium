@@ -5,10 +5,13 @@ from flask import make_response
 import os
 import json
 import traceback
-
-import test.test_get_message as t_gm
-
 from xml.etree import ElementTree as ET
+
+
+#import self libs
+import test.test_get_message as t_gm
+from models import main as models_main
+
 
 
 
@@ -55,8 +58,11 @@ def get_message():
 
 
         #make test models predict (for message , model_id = 0)
-        model_resp = t_gm.make_random_model(json_params = json_params , model_id = 0, model_to = 'message_id')
-        response['models'].append(model_resp)
+        #model_resp = t_gm.make_random_model(json_params = json_params , model_id = 0, model_to = 'message_id')
+        #response['models'].append(model_resp)
+        
+        #make real emoji predict for message
+        response['models'] = models_main.main(json_params = json_params , model_to = 'message_id')
 
         
         
