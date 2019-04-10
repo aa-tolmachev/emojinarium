@@ -676,18 +676,30 @@ def main(text_message = 'test' , model_to = 'message_id' , to_id = 0):
 
     test_df = pd.DataFrame(allRules)
 
-    result = model_0.predict_proba(test_df[model_columns])[0]
+    
 
-    good = result[2]
-    neutural =result[1]
-    bad = result[0]
+    bad = int(sum(test_df[model_columns].iloc[0].values * model_0.coef_[0]) + model_0.intercept_[0])
+    neutural = int(sum(test_df[model_columns].iloc[0].values * model_0.coef_[1]) + model_0.intercept_[1])
+    good = int(sum(test_df[model_columns].iloc[0].values * model_0.coef_[2]) + model_0.intercept_[2])
+
+
+    #result = model_0.predict_proba(test_df[model_columns])[0]
+    #good = result[2]
+    #neutural =result[1]
+    #bad = result[0]
 
     if neutural == max(good,neutural,bad):
         model_dict['model_score'] = 0
     elif good == max(good,neutural,bad):
-        model_dict['model_score'] = int(good * 100)
+        if good > 250:
+            good = 250
+
+        model_dict['model_score'] = int(good)
     else:
-        model_dict['model_score'] = int(bad * -100)
+        if bad > 250:
+            bad = 250
+
+        model_dict['model_score'] = int(bad * -1)
 
 
     return model_dict
