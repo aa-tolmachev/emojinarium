@@ -16,3 +16,6 @@ pyTelegramBotAPI
 matplotlib
 numpy
 mysql-connector-python
+sklearn
+pickle
+re
