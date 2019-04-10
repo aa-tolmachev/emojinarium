@@ -18,4 +18,3 @@ numpy
 mysql-connector-python
 sklearn
 timber
-logging
