@@ -56,7 +56,8 @@ def hello():
 @application.route('/get_message', methods=['GET', 'POST'])  
 def get_message():
     internal_id = randomString(10)
-
+    status_code = 200
+    
     response = {'status' : 'ok',
                 'code' : 200,
                 'message_id' : None,
@@ -80,7 +81,7 @@ def get_message():
         #            }
 
 
-
+        status_code = 400
         response['message_id'] = json_params['message_id']
         response['dialog_id'] = json_params['dialog_id']
         response['participants_id'] = json_params['participants_id']
@@ -92,11 +93,16 @@ def get_message():
         #response['models'].append(model_resp)
         
         #make real emoji predict for message
+        status_code = 500
         response['models'] = models_main.main(json_params = json_params , model_to = 'message_id')
         log(logger,json_params,'model done',internal_id)
         
+        status_code = 200
+        
         
     except:
+        if status_code == 200:
+            status_code = 500
         traceback.print_exc()
         response['status'] = 'error'
         response['code'] = 501
@@ -105,7 +111,7 @@ def get_message():
 
     response = json.dumps(response)
     print(response)
-    return str(response)
+    return str(response)  , status_code
         
 
 

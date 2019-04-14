@@ -661,7 +661,7 @@ def rules(X = None ,allRules = None):
 
 def main(text_message = 'test' , model_to = 'message_id' , to_id = 0):
 
-    model_dict = {'model_id' : 0,
+    model_dict = {'model_id' : 1,
                 'model_score' : None,
                 'model_to' : model_to,
                 'to_id' : to_id
