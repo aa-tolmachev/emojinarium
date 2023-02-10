@@ -15,4 +15,3 @@ telepot
 python-telegram-bot
 matplotlib
 numpy
-scikit-learn==0.22.1
