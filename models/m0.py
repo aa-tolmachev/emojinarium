@@ -6,10 +6,11 @@ import pickle
 from sklearn import linear_model
 from sklearn.linear_model import SGDClassifier as SGD
 
-
+import os
+token = os.getenv('deepai_token')
 
 filename = './models_pkl/gba2fs.pkl'
-model_0 = pickle.load(open(filename, 'rb'))
+#model_0 = pickle.load(open(filename, 'rb'))
 
 model_columns = ['rule_1', 'rule_10', 'rule_11', 'rule_12', 'rule_13', 'rule_14', 'rule_15', 'rule_16', 'rule_17', 'rule_18', 'rule_19', 'rule_2', 'rule_20', 'rule_21', 'rule_22', 'rule_23',
  'rule_24', 'rule_25', 'rule_26', 'rule_27', 'rule_28', 'rule_29', 'rule_3', 'rule_30', 'rule_31', 'rule_32', 'rule_33', 'rule_34', 'rule_35', 'rule_36', 'rule_37', 'rule_38',
@@ -677,10 +678,10 @@ def main(text_message = 'test' , model_to = 'message_id' , to_id = 0):
     test_df = pd.DataFrame(allRules)
 
     
-
-    bad = int(sum(test_df[model_columns].iloc[0].values * model_0.coef_[0]) + model_0.intercept_[0])
-    neutural = int(sum(test_df[model_columns].iloc[0].values * model_0.coef_[1]) + model_0.intercept_[1])
-    good = int(sum(test_df[model_columns].iloc[0].values * model_0.coef_[2]) + model_0.intercept_[2])
+    #deprecated
+    #bad = int(sum(test_df[model_columns].iloc[0].values * model_0.coef_[0]) + model_0.intercept_[0])
+    #neutural = int(sum(test_df[model_columns].iloc[0].values * model_0.coef_[1]) + model_0.intercept_[1])
+    #good = int(sum(test_df[model_columns].iloc[0].values * model_0.coef_[2]) + model_0.intercept_[2])
 
 
     #result = model_0.predict_proba(test_df[model_columns])[0]
@@ -688,18 +689,48 @@ def main(text_message = 'test' , model_to = 'message_id' , to_id = 0):
     #neutural =result[1]
     #bad = result[0]
 
-    if neutural == max(good,neutural,bad):
-        model_dict['model_score'] = 0
-    elif good == max(good,neutural,bad):
-        if good > 250:
-            good = 250
 
-        model_dict['model_score'] = int(good)
-    else:
-        if bad > 250:
-            bad = 250
+    #if neutural == max(good,neutural,bad):
+    #    model_dict['model_score'] = 0
+    #elif good == max(good,neutural,bad):
+    #    if good > 250:
+    #        good = 250
+    #
+    #    model_dict['model_score'] = int(good)
+    #else:
+    #    if bad > 250:
+    #        bad = 250
 
-        model_dict['model_score'] = int(bad * -1)
+    #    model_dict['model_score'] = int(bad * -1)
 
+
+    text = text_message
+
+    global token
+    r = requests.post(
+        "https://api.deepai.org/api/sentiment-analysis",
+        data={
+            'text': text,
+        },
+        headers={'api-key': token}
+    )
+    
+    print(r.status_code)
+    print(r.text)
+    result = 0
+    try:
+        resp = r.json()
+        print(resp)
+        if 'Negative' in resp['output']:
+            result = -1
+        elif 'Positive' in resp['output']:
+            result = 1
+        else:
+            result = 0
+    except:
+        result = 0
+
+    model_dict['model_score'] = result
+    
 
     return model_dict
