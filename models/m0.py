@@ -3,8 +3,8 @@ import pandas as pd
 import re
 import numpy as np
 import pickle
-from sklearn import linear_model
-from sklearn.linear_model import SGDClassifier as SGD
+#from sklearn import linear_model
+#from sklearn.linear_model import SGDClassifier as SGD
 
 import os
 token = os.getenv('deepai_token')
