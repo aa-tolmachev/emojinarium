@@ -66,12 +66,17 @@ def get_message():
                 'user_id' : None,
                 'models' :[]
                }
+    
     try:
+        print(1)
         log(logger,step='new',internal_id=internal_id)
+        print(2)
         getData = request.get_data()
+        print(3)
         json_params = json.loads(getData) 
+        print(4)
         log(logger,json_params,'get json_params',internal_id)
-
+        print(5)    
         #json_params = {'message_id':0,
         #                'dialog_id':0,
         #                'participants_id':0,
