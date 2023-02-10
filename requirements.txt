@@ -12,7 +12,6 @@ asyncio
 telepot
 python-telegram-bot
 telebot
-pyTelegramBotAPI
 matplotlib
 numpy
 mysql-connector-python
