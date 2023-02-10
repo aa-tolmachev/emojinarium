@@ -16,14 +16,14 @@ from models import main as models_main
 
 
 import logging
-import timber
+#import timber
 
 log_apikey = os.getenv('timber_apikey')
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-timber_handler = timber.TimberHandler(source_id='14767', api_key=log_apikey)
-logger.addHandler(timber_handler)
+#timber_handler = timber.TimberHandler(source_id='14767', api_key=log_apikey)
+#logger.addHandler(timber_handler)
 
 
 application = Flask(__name__)  # Change assignment here
