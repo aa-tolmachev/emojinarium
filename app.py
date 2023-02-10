@@ -72,6 +72,7 @@ def get_message():
         log(logger,step='new',internal_id=internal_id)
         print(2)
         getData = request.get_data()
+        print(getData)
         print(3)
         json_params = json.loads(getData) 
         print(4)
