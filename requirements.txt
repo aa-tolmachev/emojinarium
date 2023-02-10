@@ -1,4 +1,5 @@
 httplib2
+Cython == 0.28.5
 pandas
 datetime
 dj-database-url==0.4.1
