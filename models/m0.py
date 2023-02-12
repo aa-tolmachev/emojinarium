@@ -4,6 +4,13 @@ import re
 import numpy as np
 import pickle
 import requests
+
+
+import fasttext
+global model
+model = fasttext.load_model("./models/model.bin")
+
+
 #from sklearn import linear_model
 #from sklearn.linear_model import SGDClassifier as SGD
 
@@ -660,6 +667,52 @@ def rules(X = None ,allRules = None):
     return allRules
     
 
+#fasttext model
+def fasttext_predict(text_message):
+    fst_result = {'sentiment' : 0
+                 ,'proba' : 0}
+    
+    global model
+    
+    
+    m_predict = model.predict(text_message)
+    sentiment = m_predict[0][0]
+    if sentiment == '__label__neutral':
+        fst_result['sentiment'] = 0
+    elif sentiment == '__label__negative':
+        fst_result['sentiment'] = -1
+    elif sentiment == '__label__positive':
+        fst_result['sentiment'] = 1
+    fst_result['proba'] = m_predict[1][0]
+    
+    
+    return fst_result
+
+
+#deepai gpt model
+def deepai_predict(text_message):
+    global token
+    r = requests.post(
+        "https://api.deepai.org/api/sentiment-analysis",
+        data={
+            'text': text_message,
+        },
+        headers={'api-key': token}
+    )
+    
+    result = 0
+    try:
+        resp = r.json()
+        if 'Negative' in resp['output']:
+            result = -1
+        elif 'Positive' in resp['output']:
+            result = 1
+        else:
+            result = 0
+    except:
+        result = 0
+
+    return result
 
 def main(text_message = 'test' , model_to = 'message_id' , to_id = 0):
 
@@ -705,31 +758,14 @@ def main(text_message = 'test' , model_to = 'message_id' , to_id = 0):
     #    model_dict['model_score'] = int(bad * -1)
 
 
-    text = text_message
+    fst_result = fasttext_predict(text_message)
+    dpa_result = deepai_predict(text_message)
+    if fst_result['proba'] >= 0.8:
+        result = fst_result['sentiment']
+    else:
+        result = dpa_result
 
-    global token
-    r = requests.post(
-        "https://api.deepai.org/api/sentiment-analysis",
-        data={
-            'text': text,
-        },
-        headers={'api-key': token}
-    )
-    
-    print(r.status_code)
-    print(r.text)
-    result = 0
-    try:
-        resp = r.json()
-        print(resp)
-        if 'Negative' in resp['output']:
-            result = -1
-        elif 'Positive' in resp['output']:
-            result = 1
-        else:
-            result = 0
-    except:
-        result = 0
+
 
     model_dict['model_score'] = result
     
