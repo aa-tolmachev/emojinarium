@@ -669,6 +669,7 @@ def rules(X = None ,allRules = None):
 
 #fasttext model
 def fasttext_predict(text_message):
+    print('fasttext -- start')
     fst_result = {'sentiment' : 0
                  ,'proba' : 0}
     
@@ -685,12 +686,14 @@ def fasttext_predict(text_message):
         fst_result['sentiment'] = 1
     fst_result['proba'] = m_predict[1][0]
     
-    
+    print('fasttext -- end')
     return fst_result
 
 
 #deepai gpt model
 def deepai_predict(text_message):
+    print('deepai -- start')
+
     global token
     r = requests.post(
         "https://api.deepai.org/api/sentiment-analysis",
@@ -712,6 +715,7 @@ def deepai_predict(text_message):
     except:
         result = 0
 
+    print('deepai -- end')
     return result
 
 def main(text_message = 'test' , model_to = 'message_id' , to_id = 0):
