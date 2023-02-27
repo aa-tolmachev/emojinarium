@@ -695,13 +695,17 @@ def deepai_predict(text_message):
     print('deepai -- start')
 
     global token
-    r = requests.post(
-        "https://api.deepai.org/api/sentiment-analysis",
-        data={
-            'text': text_message,
-        },
-        headers={'api-key': token}
-    )
+    
+    try:
+        r = requests.post(
+            "https://api.deepai.org/api/sentiment-analysis",
+            data={
+                'text': text_message,
+            },
+            headers={'api-key': token}
+        )
+    except:
+        pass
     
     result = 0
     try:
