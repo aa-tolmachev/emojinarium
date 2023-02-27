@@ -684,7 +684,7 @@ def fasttext_predict(text_message):
         fst_result['sentiment'] = -1
     elif sentiment == '__label__positive':
         fst_result['sentiment'] = 1
-    fst_result['proba'] = m_predict[1][0]
+    fst_result['proba'] = np.round(m_predict[1][0] , 2)
     
     print('fasttext -- end')
     return fst_result
@@ -726,6 +726,7 @@ def main(text_message = 'test' , model_to = 'message_id' , to_id = 0):
 
     model_dict = {'model_id' : 1,
                 'model_score' : None,
+                'model_probe' : None,
                 'model_to' : model_to,
                 'to_id' : to_id
                 }
@@ -769,13 +770,15 @@ def main(text_message = 'test' , model_to = 'message_id' , to_id = 0):
     fst_result = fasttext_predict(text_message)
     dpa_result = deepai_predict(text_message)
     if fst_result['proba'] >= 0.8:
-        result = fst_result['sentiment']
+        model_dict['model_score'] = fst_result['sentiment']
+        model_dict['model_probe'] = fst_result['proba']
     else:
-        result = dpa_result
+        model_dict['model_score'] = dpa_result
+        model_dict['model_probe'] = 0.8
 
 
 
-    model_dict['model_score'] = result
+
     
 
     return model_dict
