@@ -53,6 +53,34 @@ def hello():
 
 
 #get message from messanger and calc messages models
+"""
+input example
+{"message_id":0,
+    "dialog_id":0,
+    "participants_id":0,
+    "user_id":0,
+    "content":"Блять, как ты надоел. Реально у вас ничего не работает!!!",
+    "created_at":111111111
+}
+
+output example
+{"status": "ok", 
+    "code": 200, 
+    "message_id": 0, 
+    "dialog_id": 0, 
+    "participants_id": 0, 
+    "user_id": 0, 
+    "models":
+        [{"model_id": 1, 
+            "model_score": -1, 
+            "model_probe": 0.81, 
+            "model_to": "message_id", 
+            "to_id": 0
+            }
+        ]
+}
+
+"""
 @application.route('/get_message', methods=['GET', 'POST'])  
 def get_message():
     internal_id = randomString(10)
@@ -114,6 +142,84 @@ def get_message():
     print(response)
     return str(response)  , status_code
         
+
+
+"""
+input example
+{"dialog_id":0,
+    "user_id":0,
+    "content":"Александр Толмачёв, [27.02.2023 13:07]\nтак и для тестов и для восприятия и для использования огонь будет\n\nЕвгений Султан, [27.02.2023 13:09]\nДа, мне тоже гуд. Весь лк пока в драфтовом состоянии, сейчас на реальных данных сделаем пушку-интерфейс\n\nСергей Савин Ozon, [27.02.2023 13:10]\nкстати\n\nСергей Савин Ozon, [27.02.2023 13:10]\nстраницу авторизации надо на русский перевести",
+    "created_at":111111111
+}
+
+output example
+{"status": "ok", 
+    "code": 200, 
+    "dialog_id": 0, 
+    "user_id": 0, 
+    "dialog":
+        [{"message":{"user_name" : "Александр Толмачёв",
+                    "created_dt" : "27.02.2023 13:07",
+                    "text" : "так и для тестов и для восприятия и для использования огонь будет",
+                    },
+            "models":
+                [{"model_id": 1, 
+                    "model_score": -1, 
+                    "model_probe": 0.81
+                    }
+                ]
+        },...
+        ]
+}
+
+"""
+@application.route('/get_dialog', methods=['GET', 'POST'])  
+def get_dialog():
+    internal_id = randomString(10)
+    status_code = 200
+    
+    response = {'status' : 'ok',
+                'code' : 200,
+                'dialog_id' : None,
+                'user_id' : None,
+                'dialog' :[]
+               }
+    
+    try:
+
+        log(logger,step='new',internal_id=internal_id)
+        getData = request.get_data()
+        json_params = json.loads(getData) 
+        log(logger,json_params,'get json_params',internal_id)
+
+
+        status_code = 400
+        response['dialog_id'] = json_params['dialog_id']
+        response['user_id'] = json_params['user_id']
+
+
+        
+        #make real emoji predict for message
+        status_code = 500
+        response['dialog'] = models_main.main_dialog(json_params = json_params , model_to = 'dialog_id')
+        log(logger,json_params,'model done',internal_id)
+        
+        status_code = 200
+        
+        
+    except:
+        if status_code == 200:
+            status_code = 500
+        traceback.print_exc()
+        response['status'] = 'error'
+        response['code'] = 501
+        log(logger,json_params,'some error',internal_id)
+
+
+    response = json.dumps(response)
+    print(response)
+    return str(response)  , status_code
+
 
 
 if __name__ == "__main__":
