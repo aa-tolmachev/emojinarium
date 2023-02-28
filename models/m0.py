@@ -768,13 +768,13 @@ def main(text_message = 'test' , model_to = 'message_id' , to_id = 0):
 
 
     fst_result = fasttext_predict(text_message)
-    dpa_result = deepai_predict(text_message)
-    if fst_result['proba'] >= 0.8:
-        model_dict['model_score'] = fst_result['sentiment']
-        model_dict['model_probe'] = fst_result['proba']
-    else:
-        model_dict['model_score'] = dpa_result
-        model_dict['model_probe'] = 0.8
+    #dpa_result = deepai_predict(text_message)
+    #if fst_result['proba'] >= 0.8:
+    model_dict['model_score'] = fst_result['sentiment']
+    model_dict['model_probe'] = fst_result['proba']
+    #else:
+    #    model_dict['model_score'] = dpa_result
+    #    model_dict['model_probe'] = 0.8
 
 
 
