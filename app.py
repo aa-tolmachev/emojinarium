@@ -104,6 +104,7 @@ def get_message():
         log(logger,step='new',internal_id=internal_id)
         getData = request.get_data()
         json_params = json.loads(getData) 
+        print(json_params)
         log(logger,json_params,'get json_params',internal_id)
         #json_params = {'message_id':0,
         #                'dialog_id':0,
@@ -194,6 +195,7 @@ def get_dialog():
         log(logger,step='new',internal_id=internal_id)
         getData = request.get_data()
         json_params = json.loads(getData) 
+        print(json_params)
         log(logger,json_params,'get json_params',internal_id)
 
 
