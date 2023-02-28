@@ -49,6 +49,8 @@ def main(text_message = 'test' , model_to = 'message_id' , to_id = 0):
     dialog = []
 
     #preprocess data
+    text_message = text_message.replace('\\n','\n')
+
     messages = text_message.split('\n\n')
 
     for m , i in zip( messages , range(len(messages)) ):
@@ -114,6 +116,6 @@ def main(text_message = 'test' , model_to = 'message_id' , to_id = 0):
                                  "model_probe":mod1['model_probe']}]})
 
 
-    
+
 
     return dialog
