@@ -101,7 +101,7 @@ def main(text_message = 'test' , model_to = 'message_id' , to_id = 0):
 
     #results
     df_message_results = df_chat[['user_name' , 'created_dt' , 'text']][:]
-    message_arr = list(df_results.T.to_dict().values())
+    message_arr = list(df_message_results.T.to_dict().values())
 
     df_model_results = df_chat[['model_id' , 'model_score' , 'model_probe']][:]
     models_arr = list(df_model_results.T.to_dict().values())
