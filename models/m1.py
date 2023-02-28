@@ -49,7 +49,7 @@ def main(text_message = 'test' , model_to = 'message_id' , to_id = 0):
     dialog = []
 
     #preprocess data
-    messages = telegram_text.split('\n\n')
+    messages = text_message.split('\n\n')
 
     for m , i in zip( messages , range(len(messages)) ):
         
