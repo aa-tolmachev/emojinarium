@@ -67,7 +67,6 @@ def main(text_message = 'test' , model_to = 'message_id' , to_id = 0):
     text_message = text_message.replace('\\n','\n')
 
     messages = text_message.split('\n\n')
-    print(f"11111111 {messages}")
 
     for m , i in zip( messages , range(len(messages)) ):
         
@@ -82,7 +81,7 @@ def main(text_message = 'test' , model_to = 'message_id' , to_id = 0):
     df_chat.columns = ['user_name' , 'created_dt' , 'text']
 
 
-    print(f"11111111 {df_chat}")
+    
 
     df_chat.dropna(inplace = True)
 
@@ -120,8 +119,12 @@ def main(text_message = 'test' , model_to = 'message_id' , to_id = 0):
 
 
     #results
+    print(f"11111111 {df_chat}")
     df_message_results = df_chat[['user_name' , 'created_dt' , 'text']][:]
+    print(f"222222222 {df_message_results}")
     message_arr = list(df_message_results.T.to_dict().values())
+    print(f"33333333 {message_arr}")
+
 
     df_model_results = df_chat[['model_id' , 'model_score' , 'model_probe']][:]
     models_arr = list(df_model_results.T.to_dict().values())
