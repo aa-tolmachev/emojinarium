@@ -668,12 +668,26 @@ def rules(X = None ,allRules = None):
     
 
 #fasttext model
+def split_symbols(text_message):
+    t = ''
+    for x in text_message :
+        if not str.isalpha(x) and x != ' ' :
+            if t[-1] != ' ':
+                t+= ' '
+            t += x
+            t += ' '
+        else: t += x
+    return t
+
+
 def fasttext_predict(text_message):
-    print('fasttext -- start')
     fst_result = {'sentiment' : 0
                  ,'proba' : 0}
     
     global model
+    
+    
+    text_message = split_symbols(text_message)
     
     
     m_predict = model.predict(text_message)
@@ -684,9 +698,11 @@ def fasttext_predict(text_message):
         fst_result['sentiment'] = -1
     elif sentiment == '__label__positive':
         fst_result['sentiment'] = 1
-    fst_result['proba'] = np.round(m_predict[1][0] , 2)
+    fst_result['proba'] = np.round( m_predict[1][0] , 2)
     
-    print('fasttext -- end')
+    
+    
+    
     return fst_result
 
 

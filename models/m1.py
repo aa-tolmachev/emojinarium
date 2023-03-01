@@ -20,11 +20,26 @@ token = os.getenv('deepai_token')
 filename = './models_pkl/gba2fs.pkl'
 #model_0 = pickle.load(open(filename, 'rb'))
 
+def split_symbols(text_message):
+    t = ''
+    for x in text_message :
+        if not str.isalpha(x) and x != ' ' :
+            if t[-1] != ' ':
+                t+= ' '
+            t += x
+            t += ' '
+        else: t += x
+    return t
+
+
 def fasttext_predict(text_message):
     fst_result = {'sentiment' : 0
                  ,'proba' : 0}
     
     global model
+    
+    
+    text_message = split_symbols(text_message)
     
     
     m_predict = model.predict(text_message)
@@ -35,7 +50,7 @@ def fasttext_predict(text_message):
         fst_result['sentiment'] = -1
     elif sentiment == '__label__positive':
         fst_result['sentiment'] = 1
-    fst_result['proba'] = m_predict[1][0]
+    fst_result['proba'] = np.round( m_predict[1][0] , 2)
     
     
     
