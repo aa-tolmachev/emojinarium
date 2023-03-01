@@ -143,7 +143,7 @@ def get_message():
         log(logger,json_params,'some error',internal_id)
 
 
-    response = json.dumps(response)
+    response = json.dumps(response, ensure_ascii=False)
     print(response)
     return str(response)  , status_code
         
@@ -211,7 +211,6 @@ def get_dialog():
         log(logger,json_params,'model done',internal_id)
         
         status_code = 200
-        print(1111111 , response)
         
     except:
         if status_code == 200:
@@ -222,7 +221,7 @@ def get_dialog():
         log(logger,json_params,'some error',internal_id)
 
 
-    response = json.dumps(response)
+    response = json.dumps(response, ensure_ascii=False)
     print(response)
     return str(response)  , status_code
 
