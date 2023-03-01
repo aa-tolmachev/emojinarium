@@ -687,7 +687,7 @@ def fasttext_predict(text_message):
     global model
     
     
-    text_message = split_symbols(text_message)
+    #text_message = split_symbols(text_message)
     
     
     m_predict = model.predict(text_message)
