@@ -67,6 +67,7 @@ def main(text_message = 'test' , model_to = 'message_id' , to_id = 0):
     text_message = text_message.replace('\\n','\n')
 
     messages = text_message.split('\n\n')
+    print(f"11111111 {messages}")
 
     for m , i in zip( messages , range(len(messages)) ):
         
@@ -80,6 +81,8 @@ def main(text_message = 'test' , model_to = 'message_id' , to_id = 0):
     df_chat = pd.DataFrame(messages)
     df_chat.columns = ['user_name' , 'created_dt' , 'text']
 
+
+    print(f"11111111 {df_chat}")
 
     df_chat.dropna(inplace = True)
 
