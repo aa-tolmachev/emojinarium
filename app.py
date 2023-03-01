@@ -211,7 +211,7 @@ def get_dialog():
         log(logger,json_params,'model done',internal_id)
         
         status_code = 200
-        
+        print(1111111 , response)
         
     except:
         if status_code == 200:
