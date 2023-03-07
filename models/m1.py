@@ -84,6 +84,7 @@ def main(text_message = 'test' , model_to = 'message_id' , to_id = 0):
     
 
     df_chat.dropna(inplace = True)
+    df_chat['created_dt'] = pd.to_datetime(df_chat['created_dt'])
 
     df_chat = df_chat.sort_values(by = ['created_dt'] , ascending = True)
     df_chat.reset_index(drop = True , inplace = True)
