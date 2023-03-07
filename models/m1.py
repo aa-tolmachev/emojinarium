@@ -118,6 +118,8 @@ def main(text_message = 'test' , model_to = 'message_id' , to_id = 0):
         df_chat.loc[i , 'model_score'] = ft_result['sentiment']
         df_chat.loc[i , 'model_probe'] = np.round(ft_result['proba'],2)
 
+    #back format to response
+    df_chat['created_dt'] = df_chat['created_dt'].astype(str)
 
     #results
     df_message_results = df_chat[['user_name' , 'created_dt' , 'text']][:]
